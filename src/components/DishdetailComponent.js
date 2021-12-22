@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-constructor */
 import React, { Component } from "react";
 import { Card, CardImg, CardBody, CardText, CardTitle } from "reactstrap";
 
@@ -39,7 +40,8 @@ class DishDetail extends Component {
                    {comments.map((comment) => (
                        <ul key={comment.id} className="list-unstyled">
                            <li><p>{comment.comment}</p></li>
-                           <li><p>--{comment.author}, {comment.date}</p></li>
+                           <li><p>--{comment.author}, 
+                           {new Intl.DateTimeFormat('en-US', {year: "numeric", month: "short", day: "2-digit"}).format(new Date(Date.parse(comment.date)))}</p></li>
                        </ul>
                    ))}
                 </div>
@@ -55,9 +57,11 @@ class DishDetail extends Component {
     render() {
         if (this.props.selectedDish) {
            return (
-                <div className="row">
-                    {this.renderDish(this.props.selectedDish)}
-                    {this.renderComments(this.props.selectedDish.comments)}
+                <div className="container">
+                    <div className="row">
+                        {this.renderDish(this.props.selectedDish)}
+                        {this.renderComments(this.props.selectedDish.comments)}
+                    </div>
                 </div>
             )
         } else {
