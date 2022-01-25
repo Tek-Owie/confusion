@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-pascal-case */
 import React, { Component } from "react";
-import { Card, CardImg, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem, Modal, ModalBody, ModalHeader, Button, Row, Label, FormGroup } from "reactstrap";
+import { Card, CardImg, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem, Modal, ModalBody, ModalHeader, Button, Label, FormGroup } from "reactstrap";
 import { Link } from "react-router-dom";
 import { LocalForm, Control, Errors } from "react-redux-form";
 
@@ -24,7 +24,7 @@ function RenderDish({dish}){
     );
 }
 
-function RenderComments({comments}){
+function RenderComments({comments, dishId, addComment}){
     return comments ? (
         <div className="col-12 col-md-5 m-1">
             <h4>Comments</h4>
@@ -34,7 +34,7 @@ function RenderComments({comments}){
                         <li><p>--{comment.author}, {new Intl.DateTimeFormat('en-US', {year: "numeric", month: "short", day: "2-digit"}).format(new Date(Date.parse(comment.date)))}</p></li>
                     </ul>
             ))}
-            <CommentForm/>
+            <CommentForm dishId={dishId} addComment={addComment}/>
         </div>
     ) : (
         <div />
@@ -62,8 +62,7 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        console.log(`Current state is: ${JSON.stringify(values)}`);
-        alert(`Current state is: ${JSON.stringify(values)}`);
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -150,7 +149,7 @@ const DishDetail = (props) => props.dish ? (
         </div>
         <div className="row">
             <RenderDish dish={props.dish}/>
-            <RenderComments comments={props.comments}/>
+            <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id}/>
         </div>
     </div>
 ) : <div />;
