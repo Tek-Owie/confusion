@@ -1,4 +1,5 @@
 import * as ActionTypes from './ActionTypes';
+import { DISHES } from '../shared/dishes';
 
 // The action creator creates an Action-type object, hence the curly braces within the parenthesis
 // It helps to dispatch the action-type initialized in the action types file
@@ -12,4 +13,31 @@ export const addComment = (dishId, rating, author, comment) => ({
         author: author,
         comment: comment
     }
+});
+
+/*This is a thunk. Thunks return functions. 
+The returned function does two things: implements a 2000ms delay 
+before setting the state of dishes to DISHES. While it delays, 
+the dishes loading will be set to true.*/
+
+export const fetchDishes = () => (dispatch) => {
+    dispatch(dishesLoading(true));
+
+    setTimeout(() => {
+        dispatch(addDishes(DISHES))
+    }, 2000);
+}
+
+export const dishesLoading = () => ({
+    type: ActionTypes.DISHES_LOADING
+});
+
+export const addDishes = (dishes) => ({
+    type: ActionTypes.ADD_DISHES,
+    payload: dishes
+});
+
+export const dishesFailed = (errmess) => ({
+    type: ActionTypes.DISHES_FAILED,
+    payload: errmess
 });
