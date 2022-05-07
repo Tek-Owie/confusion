@@ -26,7 +26,7 @@ function RenderDish({dish}){
     );
 }
 
-function RenderComments({comments, dishId, addComment}){
+function RenderComments({comments, dishId, postComment}){
     return comments ? (
         <div className="col-12 col-md-5 m-1">
             <h4>Comments</h4>
@@ -36,7 +36,7 @@ function RenderComments({comments, dishId, addComment}){
                         <li><p>--{comment.author}, {new Intl.DateTimeFormat('en-US', {year: "numeric", month: "short", day: "2-digit"}).format(new Date(Date.parse(comment.date)))}</p></li>
                     </ul>
             ))}
-            <CommentForm dishId={dishId} addComment={addComment}/>
+            <CommentForm dishId={dishId} postComment={postComment}/>
         </div>
     ) : (
         <div />
@@ -64,7 +64,7 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -170,7 +170,7 @@ const DishDetail = (props) => {
             </div>
             <div className="row">
                 <RenderDish dish={props.dish} />
-                <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id}/>
+                <RenderComments comments={props.comments} postComment={props.postComment} dishId={props.dish.id}/>
             </div>
         </div>
     ) : <div />;

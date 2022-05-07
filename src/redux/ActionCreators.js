@@ -5,20 +5,52 @@ import { baseUrl } from '../shared/baseUrl';
 // It helps to dispatch the action-type initialized in the action types file
 // The action creator takes in the required parameters for performing the adding comment. 
 // Within the function body, payload carries the data that needs to be transferred to the reducer function.
-export const addComment = (dishId, rating, author, comment) => ({
+
+/*The next two functions are called thunks. Thunks return functions. 
+The returned function does two things: implements a 2000ms delay 
+before setting the state of dishes to DISHES. While it delays, 
+the dishes loading will be set to true.*/
+
+export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
-    payload: {
+    payload: comment
+});
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+
+    const newComment = {
         dishId: dishId,
         rating: rating,
         author: author,
         comment: comment
     }
-});
+    newComment.date = new Date().toISOString();
 
-/*This is a thunk. Thunks return functions. 
-The returned function does two things: implements a 2000ms delay 
-before setting the state of dishes to DISHES. While it delays, 
-the dishes loading will be set to true.*/
+    return fetch(baseUrl + 'comments', {
+        method: 'POST',
+        body: JSON.stringify(newComment),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if(response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error(`Error ${response.status}: ${response.statusText}` );
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(response => dispatch(addComment(response)))
+        .catch(error => { console.log('Post Comments ', error.message)})
+}
 
 export const fetchDishes = () => (dispatch) => {
     dispatch(dishesLoading(true));
