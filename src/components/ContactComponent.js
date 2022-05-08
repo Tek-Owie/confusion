@@ -20,7 +20,8 @@ class Contact extends Component {
 
     handleSubmit(values) {
         console.log(`Current State is: ${JSON.stringify(values)}`);
-        alert(`Current State is: ${JSON.stringify(values)}`);
+        alert(`Thank you for your feedback!\n ${JSON.stringify(values)}`);
+        this.props.postFeedback(values);
         this.props.resetFeedbackForm();
     }
 
@@ -70,9 +71,9 @@ class Contact extends Component {
                     <div className="col-12 col-md-9">
                         <Form model='feedback' onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="firstname" md={2}>First Name</Label>
+                                <Label htmlFor="firstName" md={2}>First Name</Label>
                                 <Col md={10}>
-                                    <Control.text model=".firstname" id="firstname" name="firstname"
+                                    <Control.text model=".firstName" id="firstName" name="firstName"
                                         placeholder="First Name"
                                         className="form-control"
                                         validators={{
@@ -81,7 +82,7 @@ class Contact extends Component {
                                         />
                                     <Errors
                                         className="text-danger"
-                                        model=".firstname"
+                                        model=".firstName"
                                         show="touched"
                                         messages={{
                                             required: 'Required',
@@ -92,9 +93,9 @@ class Contact extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="lastname" md={2}>Last Name</Label>
+                                <Label htmlFor="lastName" md={2}>Last Name</Label>
                                 <Col md={10}>
-                                    <Control.text model=".lastname" id="lastname" name="lastname"
+                                    <Control.text model=".lastName" id="lastName" name="lastName"
                                         placeholder="Last Name"
                                         className='form-control'
                                         validators={{
@@ -103,7 +104,7 @@ class Contact extends Component {
                                         />
                                     <Errors
                                         className="text-danger"
-                                        model=".lastname"
+                                        model=".lastName"
                                         show="touched"
                                         messages={{
                                             required: 'Required',
@@ -114,9 +115,9 @@ class Contact extends Component {
                                 </Col>                        
                             </Row>
                             <Row className="form-group">
-                            <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
+                            <Label htmlFor="telNum" md={2}>Contact Tel.</Label>
                                 <Col md={10}>
-                                    <Control.text model=".telnum" id="telnum" name="telnum"
+                                    <Control.text model=".telNum" id="telNum" name="telNum"
                                         placeholder="Tel. number"
                                         className='form-control'
                                         validators={{
@@ -125,7 +126,7 @@ class Contact extends Component {
                                         />
                                 <Errors
                                     className="text-danger"
-                                    model=".telnum"
+                                    model=".telNum"
                                     show="touched"
                                     messages={{
                                         required: 'Required',
